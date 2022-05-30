@@ -21,7 +21,7 @@ class _PersistentBottomState extends State<PersistentBottomPage> {
 
   List<Widget> _buildScreens() {
     return [
-      MainScreen(
+      DownloadFilePage(
         menuScreenContext: widget.menuScreenContext,
         hideStatus: _hideNavBar,
         onScreenHideButtonPressed: () {
@@ -30,7 +30,7 @@ class _PersistentBottomState extends State<PersistentBottomPage> {
           });
         },
       ),
-      MainScreen(
+      DownloadFilePage(
         menuScreenContext: widget.menuScreenContext,
         hideStatus: _hideNavBar,
         onScreenHideButtonPressed: () {
@@ -39,7 +39,7 @@ class _PersistentBottomState extends State<PersistentBottomPage> {
           });
         },
       ),
-      MainScreen(
+      DownloadFilePage(
         menuScreenContext: widget.menuScreenContext,
         hideStatus: _hideNavBar,
         onScreenHideButtonPressed: () {
@@ -48,7 +48,7 @@ class _PersistentBottomState extends State<PersistentBottomPage> {
           });
         },
       ),
-      MainScreen(
+      DownloadFilePage(
         menuScreenContext: widget.menuScreenContext,
         hideStatus: _hideNavBar,
         onScreenHideButtonPressed: () {

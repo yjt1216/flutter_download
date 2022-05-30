@@ -3,16 +3,19 @@ import 'package:get/get.dart';
 
 import '../downloader_page/download_home_page.dart';
 
-class MainScreen extends StatelessWidget {
+class DownloadFilePage extends StatefulWidget {
   final BuildContext menuScreenContext;
   final Function onScreenHideButtonPressed;
   final bool hideStatus;
-  const MainScreen(
-      {Key? key,
-        required this.menuScreenContext,
-        required this.onScreenHideButtonPressed,
-        this.hideStatus = false})
-      : super(key: key);
+
+  const DownloadFilePage({Key? key, required this.menuScreenContext, required this.onScreenHideButtonPressed, this.hideStatus = false}) : super(key: key);
+
+  @override
+  _DownloadFileState createState() => _DownloadFileState();
+}
+
+class _DownloadFileState extends State<DownloadFilePage> {
+
 
   @override
   Widget build(BuildContext context) {
@@ -37,7 +40,7 @@ class MainScreen extends StatelessWidget {
                 child: ElevatedButton(
                   onPressed: () {
                     // TargetPlatform? platform = Theme.of(context).platform;
-                    Get.to(() => const DownloadHomePage(title: 'title'));
+                    Get.to(() => const DownloadHomePage(title: 'title',));
                   },
                   child: const Text(
                     "Go to Second Screen ->",
@@ -100,7 +103,7 @@ class MainScreen extends StatelessWidget {
               Center(
                 child: ElevatedButton(
                   onPressed: () {
-
+                    debugPrint('添加下载任务');
                   },
                   child: const Text(
                     "添加下载任务",
@@ -111,10 +114,10 @@ class MainScreen extends StatelessWidget {
               Center(
                 child: ElevatedButton(
                   onPressed: () {
-                    onScreenHideButtonPressed();
+                    widget.onScreenHideButtonPressed();
                   },
                   child: Text(
-                    hideStatus
+                    widget.hideStatus
                         ? "展示 Navigation Bar"
                         : "隐藏 Navigation Bar",
                     style: const TextStyle(color: Colors.white),
@@ -124,7 +127,7 @@ class MainScreen extends StatelessWidget {
               Center(
                 child: ElevatedButton(
                   onPressed: () {
-                    Navigator.of(menuScreenContext).pop();
+                    Navigator.of(widget.menuScreenContext).pop();
                   },
                   child: const Text(
                     "<- Main Menu",
@@ -139,4 +142,7 @@ class MainScreen extends StatelessWidget {
       ),
     );
   }
+
+
+
 }

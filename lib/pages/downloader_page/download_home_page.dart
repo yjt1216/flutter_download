@@ -81,7 +81,7 @@ class _DownloadHomePageState extends State<DownloadHomePage> {
       final status = data[1] as DownloadTaskStatus;
       final progress = data[2] as int;
 
-      print(
+      debugPrint(
         'Callback on UI isolate: '
             'task ($taskId) is in status ($status) and process ($progress)',
       );
@@ -278,7 +278,7 @@ class _DownloadHomePageState extends State<DownloadHomePage> {
     final tasks = await FlutterDownloader.loadTasks();
 
     if (tasks == null) {
-      print('No tasks were retrieved from the database.');
+      debugPrint('No tasks were retrieved from the database.');
       return;
     }
 

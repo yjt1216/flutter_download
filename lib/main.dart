@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_download/pages/persistent_bottom/persistent_bottom_page.dart';
 import 'package:flutter_downloader/flutter_downloader.dart';
-
+import 'package:get/get.dart';
 
 void main() async{
   WidgetsFlutterBinding.ensureInitialized();
@@ -15,7 +15,7 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return GetMaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
         primarySwatch: Colors.blue,
