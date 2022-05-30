@@ -1,16 +1,16 @@
 class DownloadItems {
-  static const documents = [
-    DownloadItem(
-      name: 'Android Programming Cookbook',
-      url:
-      'http://enos.itcollege.ee/~jpoial/allalaadimised/reading/Android-Programming-Cookbook.pdf',
-    ),
-    DownloadItem(
-      name: 'iOS Programming Guide',
-      url:
-      'http://englishonlineclub.com/pdf/iOS%20Programming%20-%20The%20Big%20Nerd%20Ranch%20Guide%20(6th%20Edition)%20[EnglishOnlineClub.com].pdf',
-    ),
-  ];
+  // static const documents = [
+  //   DownloadItem(
+  //     name: 'Android Programming Cookbook',
+  //     url:
+  //     'http://enos.itcollege.ee/~jpoial/allalaadimised/reading/Android-Programming-Cookbook.pdf',
+  //   ),
+  //   DownloadItem(
+  //     name: 'iOS Programming Guide',
+  //     url:
+  //     'http://englishonlineclub.com/pdf/iOS%20Programming%20-%20The%20Big%20Nerd%20Ranch%20Guide%20(6th%20Edition)%20[EnglishOnlineClub.com].pdf',
+  //   ),
+  // ];
 
   static const images = [
     DownloadItem(

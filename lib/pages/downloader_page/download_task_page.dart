@@ -1,30 +1,32 @@
+
+
 import 'dart:io';
 import 'dart:isolate';
 import 'dart:ui';
 
 import 'package:android_path_provider/android_path_provider.dart';
+import 'package:connectivity/connectivity.dart';
 import 'package:device_info/device_info.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_downloader/flutter_downloader.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
-import 'package:connectivity/connectivity.dart';
+import 'package:get/get.dart';
 
 import 'download_data.dart';
+import 'download_home_page.dart';
 import 'download_list_item.dart';
+import 'download_task_item.dart';
 
-class DownloadHomePage extends StatefulWidget with WidgetsBindingObserver {
+class DownloadTaskPage extends StatefulWidget {
   final TargetPlatform? platform;
 
-  final String title;
-
-  const DownloadHomePage({Key? key, this.platform, required this.title}) : super(key: key);
+  const DownloadTaskPage({Key? key, this.platform}) : super(key: key);
 
   @override
-  _DownloadHomePageState createState() => _DownloadHomePageState();
+  _DownloadTaskState createState() => _DownloadTaskState();
 }
-
-class _DownloadHomePageState extends State<DownloadHomePage> {
+class _DownloadTaskState extends State<DownloadTaskPage> {
   List<TaskInfo>? _tasks;
   late List<ItemHolder> _items;
   late bool _loading;
@@ -120,31 +122,10 @@ class _DownloadHomePageState extends State<DownloadHomePage> {
       for (final item in _items)
         item.task == null
             ? _buildListSectionHeading(item.name!)
-            : DownloadListItem(
+            : DownloadTaskItem(
           data: item,
-          onTap: (task) {
-            _openDownloadedFile(task).then((success) {
-              if (!success) {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(
-                    content: Text('Cannot open this file'),
-                  ),
-                );
-              }
-            });
-          },
           onActionTap: (task) {
-            if (task.status == DownloadTaskStatus.undefined) {
-              _requestDownload(task);
-            } else if (task.status == DownloadTaskStatus.running) {
-              _pauseDownload(task);
-            } else if (task.status == DownloadTaskStatus.paused) {
-              _resumeDownload(task);
-            } else if (task.status == DownloadTaskStatus.complete) {
-              _delete(task);
-            } else if (task.status == DownloadTaskStatus.failed) {
-              _retryDownload(task);
-            }
+            _requestDownload(task);
           },
         ),
     ],
@@ -164,6 +145,7 @@ class _DownloadHomePageState extends State<DownloadHomePage> {
     );
   }
 
+  /// 无权限下载
   Widget _buildNoPermissionWarning() {
     return Center(
       child: Column(
@@ -197,10 +179,6 @@ class _DownloadHomePageState extends State<DownloadHomePage> {
   Future<void> _retryRequestPermission() async {
     final hasGranted = await _checkPermission();
 
-    if (hasGranted) {
-      await _prepareSaveDir();
-    }
-
     setState(() {
       _permissionReady = hasGranted;
     });
@@ -215,41 +193,7 @@ class _DownloadHomePageState extends State<DownloadHomePage> {
     );
   }
 
-  // Not used in the example.
-  // void _cancelDownload(_TaskInfo task) async {
-  //   await FlutterDownloader.cancel(taskId: task.taskId!);
-  // }
 
-  Future<void> _pauseDownload(TaskInfo task) async {
-    await FlutterDownloader.pause(taskId: task.taskId!);
-  }
-
-  Future<void> _resumeDownload(TaskInfo task) async {
-    final newTaskId = await FlutterDownloader.resume(taskId: task.taskId!);
-    task.taskId = newTaskId;
-  }
-
-  Future<void> _retryDownload(TaskInfo task) async {
-    final newTaskId = await FlutterDownloader.retry(taskId: task.taskId!);
-    task.taskId = newTaskId;
-  }
-
-  Future<bool> _openDownloadedFile(TaskInfo? task) {
-    if (task != null) {
-      return FlutterDownloader.open(taskId: task.taskId!);
-    } else {
-      return Future.value(false);
-    }
-  }
-
-  Future<void> _delete(TaskInfo task) async {
-    await FlutterDownloader.remove(
-      taskId: task.taskId!,
-      shouldDeleteContent: true,
-    );
-    await _prepareDownloadData();
-    setState(() {});
-  }
 
   Future<bool> _checkPermission() async {
     if (Platform.isIOS) {
@@ -362,7 +306,15 @@ class _DownloadHomePageState extends State<DownloadHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.title),
+        title: const Text('云盘'),
+        actions: [
+          InkWell(
+            onTap: (){
+              Get.to(() => const DownloadHomePage(title: '传输列表'));
+            },
+            child: const Text('传输列表'),
+          ),
+        ],
       ),
       body: Builder(
         builder: (context) {
@@ -377,22 +329,4 @@ class _DownloadHomePageState extends State<DownloadHomePage> {
       ),
     );
   }
-}
-
-class ItemHolder {
-  ItemHolder({this.name, this.task});
-
-  final String? name;
-  final TaskInfo? task;
-}
-
-class TaskInfo {
-  TaskInfo({this.name, this.link});
-
-  final String? name;
-  final String? link;
-
-  String? taskId;
-  int? progress = 0;
-  DownloadTaskStatus? status = DownloadTaskStatus.undefined;
 }

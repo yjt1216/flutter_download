@@ -1,8 +1,10 @@
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import '../downloader_page/download_task_page.dart';
 
-import '../downloader_page/download_home_page.dart';
-
+///tab_bar 子界面
+///
 class DownloadFilePage extends StatefulWidget {
   final BuildContext menuScreenContext;
   final Function onScreenHideButtonPressed;
@@ -15,6 +17,12 @@ class DownloadFilePage extends StatefulWidget {
 }
 
 class _DownloadFileState extends State<DownloadFilePage> {
+
+  @override
+  void initState() {
+
+    super.initState();
+  }
 
 
   @override
@@ -34,18 +42,6 @@ class _DownloadFileState extends State<DownloadFilePage> {
                     horizontal: 30.0, vertical: 20.0),
                 child: TextField(
                   decoration: InputDecoration(hintText: "Test Text Field"),
-                ),
-              ),
-              Center(
-                child: ElevatedButton(
-                  onPressed: () {
-                    // TargetPlatform? platform = Theme.of(context).platform;
-                    Get.to(() => const DownloadHomePage(title: 'title',));
-                  },
-                  child: const Text(
-                    "Go to Second Screen ->",
-                    style: TextStyle(color: Colors.white),
-                  ),
                 ),
               ),
               Center(
@@ -104,6 +100,7 @@ class _DownloadFileState extends State<DownloadFilePage> {
                 child: ElevatedButton(
                   onPressed: () {
                     debugPrint('添加下载任务');
+                    Get.to(() => const DownloadTaskPage());
                   },
                   child: const Text(
                     "添加下载任务",
@@ -142,7 +139,6 @@ class _DownloadFileState extends State<DownloadFilePage> {
       ),
     );
   }
-
 
 
 }

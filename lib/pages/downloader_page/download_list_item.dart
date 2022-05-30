@@ -14,6 +14,7 @@ class DownloadListItem extends StatelessWidget {
 
   const DownloadListItem({Key? key, this.data, this.onTap, this.onActionTap}) : super(key: key);
 
+  ///下载相关控件
   Widget? _buildTrailing(TaskInfo task) {
     if (task.status == DownloadTaskStatus.undefined) {
       return IconButton(
