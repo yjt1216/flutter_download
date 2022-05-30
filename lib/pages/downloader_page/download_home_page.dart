@@ -12,6 +12,7 @@ import 'package:connectivity/connectivity.dart';
 
 import 'download_data.dart';
 import 'download_list_item.dart';
+import 'download_task_model.dart';
 
 class DownloadHomePage extends StatefulWidget with WidgetsBindingObserver {
   final TargetPlatform? platform;
@@ -377,22 +378,4 @@ class _DownloadHomePageState extends State<DownloadHomePage> {
       ),
     );
   }
-}
-
-class ItemHolder {
-  ItemHolder({this.name, this.task});
-
-  final String? name;
-  final TaskInfo? task;
-}
-
-class TaskInfo {
-  TaskInfo({this.name, this.link});
-
-  final String? name;
-  final String? link;
-
-  String? taskId;
-  int? progress = 0;
-  DownloadTaskStatus? status = DownloadTaskStatus.undefined;
 }

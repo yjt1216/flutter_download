@@ -1,5 +1,4 @@
 
-
 import 'dart:io';
 import 'dart:isolate';
 import 'dart:ui';
@@ -15,8 +14,8 @@ import 'package:get/get.dart';
 
 import 'download_data.dart';
 import 'download_home_page.dart';
-import 'download_list_item.dart';
 import 'download_task_item.dart';
+import 'download_task_model.dart';
 
 class DownloadTaskPage extends StatefulWidget {
   final TargetPlatform? platform;
@@ -187,7 +186,7 @@ class _DownloadTaskState extends State<DownloadTaskPage> {
   Future<void> _requestDownload(TaskInfo task) async {
     task.taskId = await FlutterDownloader.enqueue(
       url: task.link!,
-      headers: {'auth': 'test_for_sql_encoding'},
+      headers: {'auth': 'test_for_sql_encoding'}, //参数
       savedDir: _localPath,
       saveInPublicStorage: true,
     );

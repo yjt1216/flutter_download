@@ -2,7 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_downloader/flutter_downloader.dart';
 
-import 'download_home_page.dart';
+import 'download_task_model.dart';
 
 ///下载item
 ///
