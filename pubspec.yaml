@@ -48,6 +48,8 @@ dependencies:
   android_path_provider: ^0.3.0
   device_info: ^2.0.3
   connectivity: ^3.0.6
+  persistent_bottom_nav_bar: ^4.0.2
+  flutter_svg: ^1.0.3
 
 dev_dependencies:
   flutter_test:
@@ -70,6 +72,9 @@ flutter:
   # included with your application, so that you can use the icons in
   # the material Icons class.
   uses-material-design: true
+  assets:
+    - assets/tab/
+    - assets/
 
   # To add assets to your application, add an assets section, like this:
   # assets:

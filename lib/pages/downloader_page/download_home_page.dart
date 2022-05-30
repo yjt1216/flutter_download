@@ -39,7 +39,6 @@ class _DownloadHomePageState extends State<DownloadHomePage> {
     _bindBackgroundIsolate();
 
     FlutterDownloader.registerCallback(downloadCallback);
-    // FlutterDownloader.registerCallback(downloadCallback, step: 1);
 
     _loading = true;
     _permissionReady = false;
@@ -107,7 +106,7 @@ class _DownloadHomePageState extends State<DownloadHomePage> {
       DownloadTaskStatus status,
       int progress,
       ) {
-    print('Callback on background isolate: ' 'task.id ($id) is in status ($status) and process ($progress)',
+    debugPrint('Callback on background isolate: ' 'task.id ($id) is in status ($status) and process ($progress)',
     );
 
     IsolateNameServer.lookupPortByName('downloader_send_port')

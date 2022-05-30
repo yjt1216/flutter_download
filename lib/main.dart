@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_download/pages/persistent_bottom/persistent_bottom_page.dart';
 import 'package:flutter_downloader/flutter_downloader.dart';
 
-import 'downloader_page/download_home_page.dart';
 
 void main() async{
   WidgetsFlutterBinding.ensureInitialized();
@@ -20,9 +20,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const DownloadHomePage(
-        title: 'Flutter download',
-      ),
+      home:  PersistentBottomPage(menuScreenContext: context,),
     );
   }
 }
