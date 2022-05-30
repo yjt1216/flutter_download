@@ -15,4 +15,12 @@
     <style name="NormalTheme" parent="@android:style/Theme.Light.NoTitleBar">
         <item name="android:windowBackground">?android:colorBackground</item>
     </style>
+<!--flutter_downloader 配置-->
+    <string name="flutter_downloader_notification_started">开始下载</string>
+    <string name="flutter_downloader_notification_in_progress">正在下载</string>
+    <string name="flutter_downloader_notification_canceled">下载取消</string>
+    <string name="flutter_downloader_notification_failed">下载失败</string>
+    <string name="flutter_downloader_notification_complete">下载完成</string>
+    <string name="flutter_downloader_notification_paused">下载暂停</string>
+
 </resources>
