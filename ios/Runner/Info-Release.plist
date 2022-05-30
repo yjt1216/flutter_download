@@ -43,5 +43,22 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
+    <!-- 权限配置   -->
+    <key>NSAppTransportSecurity</key>
+    <dict>
+        <key>NSAllowsArbitraryLoads</key><true/>
+    </dict>
+    <key>NSCameraUsageDescription</key>
+    <string>需要访问您的相机设置头像</string>
+    <key>NSPhotoLibraryAddUsageDescription</key>
+    <string>请允许APP保存图片到相册</string>
+    <key>NSPhotoLibraryUsageDescription</key>
+    <string>需要访问您的相册设置头像</string>
+    <!-- changes this number to configure the maximum number of concurrent tasks -->
+    <key>FDMaximumConcurrentTasks</key>
+    <integer>5</integer>
+    <key>FDAllFilesDownloadedMessage</key>
+    <string>All files have been downloaded</string>
+    
 </dict>
 </plist>
