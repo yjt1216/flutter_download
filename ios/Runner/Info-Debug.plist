@@ -64,5 +64,9 @@
 	<integer>5</integer>
 	<key>FDAllFilesDownloadedMessage</key>
 	<string>All files have been downloaded</string>
+    <key>LSSupportsOpeningDocumentsInPlace</key>
+    <true/>
+    <key>UIFileSharingEnabled</key>
+    <true/>
 </dict>
 </plist>
