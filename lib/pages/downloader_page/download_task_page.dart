@@ -17,6 +17,8 @@ import 'download_home_page.dart';
 import 'download_task_item.dart';
 import 'download_task_model.dart';
 
+///添加下载任务
+///
 class DownloadTaskPage extends StatefulWidget {
   final TargetPlatform? platform;
 
@@ -58,7 +60,6 @@ class _DownloadTaskState extends State<DownloadTaskPage> {
       return true;
     }
   }
-  //检测网络权限
 
 
   @override

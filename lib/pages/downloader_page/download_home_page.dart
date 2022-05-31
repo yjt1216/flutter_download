@@ -14,6 +14,8 @@ import 'download_data.dart';
 import 'download_list_item.dart';
 import 'download_task_model.dart';
 
+///传输列表
+///
 class DownloadHomePage extends StatefulWidget with WidgetsBindingObserver {
   final TargetPlatform? platform;
 
@@ -378,4 +380,5 @@ class _DownloadHomePageState extends State<DownloadHomePage> {
       ),
     );
   }
+
 }
