@@ -10,24 +10,23 @@ import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:connectivity/connectivity.dart';
 
-import 'download_data.dart';
 import 'download_list_item.dart';
 import 'download_task_model.dart';
 
 ///传输列表
 ///
-class DownloadHomePage extends StatefulWidget with WidgetsBindingObserver {
+class DownloadTransferList extends StatefulWidget with WidgetsBindingObserver {
   final TargetPlatform? platform;
 
   final String title;
 
-  const DownloadHomePage({Key? key, this.platform, required this.title}) : super(key: key);
+  const DownloadTransferList({Key? key, this.platform, required this.title}) : super(key: key);
 
   @override
   _DownloadHomePageState createState() => _DownloadHomePageState();
 }
 
-class _DownloadHomePageState extends State<DownloadHomePage> {
+class _DownloadHomePageState extends State<DownloadTransferList> {
   List<TaskInfo>? _tasks;
   late List<ItemHolder> _items;
   late bool _loading;
@@ -60,8 +59,6 @@ class _DownloadHomePageState extends State<DownloadHomePage> {
       return true;
     }
   }
-  //检测网络权限
-
 
   @override
   void dispose() {
@@ -117,6 +114,7 @@ class _DownloadHomePageState extends State<DownloadHomePage> {
         ?.send([id, status, progress]);
   }
 
+
   Widget _buildDownloadList() => ListView(
     padding: const EdgeInsets.symmetric(vertical: 16),
     children: [
@@ -147,6 +145,9 @@ class _DownloadHomePageState extends State<DownloadHomePage> {
               _delete(task);
             } else if (task.status == DownloadTaskStatus.failed) {
               _retryDownload(task);
+            }else if (task.status == DownloadTaskStatus.enqueued) {
+              debugPrint('enqueued');
+              _delete(task);
             }
           },
         ),
@@ -219,9 +220,9 @@ class _DownloadHomePageState extends State<DownloadHomePage> {
   }
 
   // Not used in the example.
-  // void _cancelDownload(_TaskInfo task) async {
-  //   await FlutterDownloader.cancel(taskId: task.taskId!);
-  // }
+  void _cancelDownload(TaskInfo task) async {
+    await FlutterDownloader.cancel(taskId: task.taskId!);
+  }
 
   Future<void> _pauseDownload(TaskInfo task) async {
     await FlutterDownloader.pause(taskId: task.taskId!);
@@ -292,23 +293,14 @@ class _DownloadHomePageState extends State<DownloadHomePage> {
     _tasks = [];
     _items = [];
 
-    _tasks!.addAll(
-      DownloadItems.images
-          .map((image) => TaskInfo(name: image.name, link: image.url)),
-    );
 
-    _items.add(ItemHolder(name: 'Images'));
-    for (var i = count; i < _tasks!.length; i++) {
-      _items.add(ItemHolder(name: _tasks![i].name, task: _tasks![i]));
-      count++;
-    }
 
-    _tasks!.addAll(
-      DownloadItems.videos
-          .map((video) => TaskInfo(name: video.name, link: video.url)),
-    );
+    _tasks!.addAll(tasks.map((e) {
+      print(e.url);
+      var name = e.url.substring(e.url.lastIndexOf("/") + 1, e.url.length);
+      return TaskInfo(name: name,link: e.url);
+    }));
 
-    _items.add(ItemHolder(name: 'Videos'));
     for (var i = count; i < _tasks!.length; i++) {
       _items.add(ItemHolder(name: _tasks![i].name, task: _tasks![i]));
       count++;
@@ -372,7 +364,6 @@ class _DownloadHomePageState extends State<DownloadHomePage> {
           if (_loading) {
             return const Center(child: CircularProgressIndicator());
           }
-
           return _permissionReady
               ? _buildDownloadList()
               : _buildNoPermissionWarning();

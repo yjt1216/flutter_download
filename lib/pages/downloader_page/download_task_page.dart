@@ -13,9 +13,9 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:get/get.dart';
 
 import 'download_data.dart';
-import 'download_home_page.dart';
 import 'download_task_item.dart';
 import 'download_task_model.dart';
+import 'download_transfer_list.dart';
 
 ///添加下载任务
 ///
@@ -124,7 +124,7 @@ class _DownloadTaskState extends State<DownloadTaskPage> {
             ? _buildListSectionHeading(item.name!)
             : DownloadTaskItem(
           data: item,
-          onActionTap: (task) {
+          onActionTap: (task) { //添加下载任务
             _requestDownload(task);
           },
         ),
@@ -163,7 +163,7 @@ class _DownloadTaskState extends State<DownloadTaskPage> {
           TextButton(
             onPressed: _retryRequestPermission,
             child: const Text(
-              'Retry',
+              '重新申请',
               style: TextStyle(
                 color: Colors.blue,
                 fontWeight: FontWeight.bold,
@@ -178,7 +178,6 @@ class _DownloadTaskState extends State<DownloadTaskPage> {
 
   Future<void> _retryRequestPermission() async {
     final hasGranted = await _checkPermission();
-
     setState(() {
       _permissionReady = hasGranted;
     });
@@ -194,7 +193,7 @@ class _DownloadTaskState extends State<DownloadTaskPage> {
   }
 
 
-
+  /// 检测配置权限
   Future<bool> _checkPermission() async {
     if (Platform.isIOS) {
       return true;
@@ -306,14 +305,19 @@ class _DownloadTaskState extends State<DownloadTaskPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('云盘'),
+        title: const Align(
+          child: Text('我的云盘'),
+        ),
         actions: [
           InkWell(
             onTap: (){
-              Get.to(() => const DownloadHomePage(title: '传输列表'));
+              Get.to(() => const DownloadTransferList(title: '传输列表'));
             },
-            child: const Text('传输列表'),
+            child: const Align(
+              child: Text('传输列表'),
+            ),
           ),
+          const SizedBox(width: 15.0,),
         ],
       ),
       body: Builder(
@@ -321,7 +325,6 @@ class _DownloadTaskState extends State<DownloadTaskPage> {
           if (_loading) {
             return const Center(child: CircularProgressIndicator());
           }
-
           return _permissionReady
               ? _buildDownloadList()
               : _buildNoPermissionWarning();

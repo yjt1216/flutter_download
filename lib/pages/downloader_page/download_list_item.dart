@@ -49,7 +49,7 @@ class DownloadListItem extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
-          const Text('准备', style: TextStyle(color: Colors.green)),
+          const Text('完成', style: TextStyle(color: Colors.green)),
           IconButton(
             onPressed: () => onActionTap!(task),
             constraints: const BoxConstraints(minHeight: 32, minWidth: 32),
@@ -73,7 +73,20 @@ class DownloadListItem extends StatelessWidget {
         ],
       );
     } else if (task.status == DownloadTaskStatus.enqueued) {//任务入队
-      return const Text('等待', style: TextStyle(color: Colors.orange));
+      return Row(
+        mainAxisSize: MainAxisSize.min,
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: [
+          const Text('等待', style: TextStyle(color: Colors.orangeAccent)),
+          IconButton(
+            onPressed: () => onActionTap!(task),
+            constraints: const BoxConstraints(minHeight: 32, minWidth: 32),
+            icon: const Icon(Icons.delete),
+          )
+        ],
+      );
+
+      //return const Text('等待', style: TextStyle(color: Colors.orange));
     } else {
       return null;
     }
