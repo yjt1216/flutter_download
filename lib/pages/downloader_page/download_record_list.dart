@@ -4,30 +4,31 @@ import 'dart:isolate';
 import 'dart:ui';
 
 import 'package:android_path_provider/android_path_provider.dart';
-import 'package:connectivity/connectivity.dart';
 import 'package:device_info/device_info.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_downloader/flutter_downloader.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
-import 'package:get/get.dart';
+import 'package:connectivity/connectivity.dart';
 
-import 'mock/download_data.dart';
-import 'widget/download_task_item.dart';
+import 'widget/download_list_item.dart';
 import 'model/download_task_model.dart';
-import 'download_transfer_list.dart';
 
-///添加下载任务
+/// 下载记录
+/// 下载完成的task
 ///
-class DownloadTaskPage extends StatefulWidget {
+class DownloadRecordList extends StatefulWidget with WidgetsBindingObserver {
   final TargetPlatform? platform;
 
-  const DownloadTaskPage({Key? key, this.platform}) : super(key: key);
+  final String title;
+
+  const DownloadRecordList({Key? key, this.platform, required this.title}) : super(key: key);
 
   @override
-  _DownloadTaskState createState() => _DownloadTaskState();
+  _DownloadRecordListState createState() => _DownloadRecordListState();
 }
-class _DownloadTaskState extends State<DownloadTaskPage> {
+
+class _DownloadRecordListState extends State<DownloadRecordList> {
   List<TaskInfo>? _tasks;
   late List<ItemHolder> _items;
   late bool _loading;
@@ -60,7 +61,6 @@ class _DownloadTaskState extends State<DownloadTaskPage> {
       return true;
     }
   }
-
 
   @override
   void dispose() {
@@ -116,16 +116,41 @@ class _DownloadTaskState extends State<DownloadTaskPage> {
         ?.send([id, status, progress]);
   }
 
-  Widget _buildDownloadList() => ListView(
+
+  Widget _buildRRecordList() => ListView(
     padding: const EdgeInsets.symmetric(vertical: 16),
     children: [
       for (final item in _items)
         item.task == null
             ? _buildListSectionHeading(item.name!)
-            : DownloadTaskItem(
+            : DownloadListItem(
           data: item,
-          onActionTap: (task) { //添加下载任务
-            _requestDownload(task);
+          onTap: (task) {
+            _openDownloadedFile(task).then((success) {
+              if (!success) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                    content: Text('Cannot open this file'),
+                  ),
+                );
+              }
+            });
+          },
+          onActionTap: (task) {
+            if (task.status == DownloadTaskStatus.undefined) {
+              _requestDownload(task);
+            } else if (task.status == DownloadTaskStatus.running) {
+              _pauseDownload(task);
+            } else if (task.status == DownloadTaskStatus.paused) {
+              _resumeDownload(task);
+            } else if (task.status == DownloadTaskStatus.complete) {
+              _delete(task);
+            } else if (task.status == DownloadTaskStatus.failed) {
+              _retryDownload(task);
+            }else if (task.status == DownloadTaskStatus.enqueued) {
+              debugPrint('enqueued');
+              _delete(task);
+            }
           },
         ),
     ],
@@ -145,7 +170,6 @@ class _DownloadTaskState extends State<DownloadTaskPage> {
     );
   }
 
-  /// 无权限下载
   Widget _buildNoPermissionWarning() {
     return Center(
       child: Column(
@@ -163,7 +187,7 @@ class _DownloadTaskState extends State<DownloadTaskPage> {
           TextButton(
             onPressed: _retryRequestPermission,
             child: const Text(
-              '重新申请',
+              'Retry',
               style: TextStyle(
                 color: Colors.blue,
                 fontWeight: FontWeight.bold,
@@ -178,6 +202,11 @@ class _DownloadTaskState extends State<DownloadTaskPage> {
 
   Future<void> _retryRequestPermission() async {
     final hasGranted = await _checkPermission();
+
+    if (hasGranted) {
+      await _prepareSaveDir();
+    }
+
     setState(() {
       _permissionReady = hasGranted;
     });
@@ -186,14 +215,48 @@ class _DownloadTaskState extends State<DownloadTaskPage> {
   Future<void> _requestDownload(TaskInfo task) async {
     task.taskId = await FlutterDownloader.enqueue(
       url: task.link!,
-      headers: {'auth': 'test_for_sql_encoding'}, //参数
+      headers: {'auth': 'test_for_sql_encoding'},
       savedDir: _localPath,
       saveInPublicStorage: true,
     );
   }
 
+  // // Not used in the example.
+  // void _cancelDownload(TaskInfo task) async {
+  //   await FlutterDownloader.cancel(taskId: task.taskId!);
+  // }
 
-  /// 检测配置权限
+  Future<void> _pauseDownload(TaskInfo task) async {
+    await FlutterDownloader.pause(taskId: task.taskId!);
+  }
+
+  Future<void> _resumeDownload(TaskInfo task) async {
+    final newTaskId = await FlutterDownloader.resume(taskId: task.taskId!);
+    task.taskId = newTaskId;
+  }
+
+  Future<void> _retryDownload(TaskInfo task) async {
+    final newTaskId = await FlutterDownloader.retry(taskId: task.taskId!);
+    task.taskId = newTaskId;
+  }
+
+  Future<bool> _openDownloadedFile(TaskInfo? task) {
+    if (task != null) {
+      return FlutterDownloader.open(taskId: task.taskId!);
+    } else {
+      return Future.value(false);
+    }
+  }
+
+  Future<void> _delete(TaskInfo task) async {
+    await FlutterDownloader.remove(
+      taskId: task.taskId!,
+      shouldDeleteContent: true,
+    );
+    await _prepareDownloadData();
+    setState(() {});
+  }
+
   Future<bool> _checkPermission() async {
     if (Platform.isIOS) {
       return true;
@@ -232,25 +295,16 @@ class _DownloadTaskState extends State<DownloadTaskPage> {
     _tasks = [];
     _items = [];
 
-    _tasks!.addAll(
-      DownloadItems.images
-          .map((image) => TaskInfo(name: image.name, link: image.url)),
-    );
+    _tasks!.addAll(tasks.map((e) {
+      debugPrint(e.url);
+      var name = e.url.substring(e.url.lastIndexOf("/") + 1, e.url.length);
+      return TaskInfo(name: name,link: e.url);
+    }));
 
-    _items.add(ItemHolder(name: 'Images'));
     for (var i = count; i < _tasks!.length; i++) {
-      _items.add(ItemHolder(name: _tasks![i].name, task: _tasks![i]));
-      count++;
-    }
-
-    _tasks!.addAll(
-      DownloadItems.videos
-          .map((video) => TaskInfo(name: video.name, link: video.url)),
-    );
-
-    _items.add(ItemHolder(name: 'Videos'));
-    for (var i = count; i < _tasks!.length; i++) {
-      _items.add(ItemHolder(name: _tasks![i].name, task: _tasks![i]));
+      if(_tasks![i].status == DownloadTaskStatus.complete){
+        _items.add(ItemHolder(name: _tasks![i].name, task: _tasks![i]));
+      }
       count++;
     }
 
@@ -274,6 +328,7 @@ class _DownloadTaskState extends State<DownloadTaskPage> {
     setState(() {
       _loading = false;
     });
+
   }
 
   Future<void> _prepareSaveDir() async {
@@ -305,20 +360,7 @@ class _DownloadTaskState extends State<DownloadTaskPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Align(
-          child: Text('我的云盘'),
-        ),
-        actions: [
-          InkWell(
-            onTap: (){
-              Get.to(() => const DownloadTransferList(title: '传输列表'));
-            },
-            child: const Align(
-              child: Text('传输列表'),
-            ),
-          ),
-          const SizedBox(width: 15.0,),
-        ],
+        title: Text(widget.title),
       ),
       body: Builder(
         builder: (context) {
@@ -326,10 +368,11 @@ class _DownloadTaskState extends State<DownloadTaskPage> {
             return const Center(child: CircularProgressIndicator());
           }
           return _permissionReady
-              ? _buildDownloadList()
+              ? _buildRRecordList()
               : _buildNoPermissionWarning();
         },
       ),
     );
   }
+
 }

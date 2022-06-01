@@ -5,13 +5,17 @@ import 'dart:ui';
 import 'package:android_path_provider/android_path_provider.dart';
 import 'package:device_info/device_info.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_download/pages/downloader_page/download_record_list.dart';
+import 'package:flutter_download/pages/downloader_page/widget/download_record_item.dart';
 import 'package:flutter_downloader/flutter_downloader.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:connectivity/connectivity.dart';
+import 'package:get/get.dart';
 
 import 'widget/download_list_item.dart';
-import 'download_task_model.dart';
+import 'model/download_task_model.dart';
+
 
 ///传输列表
 ///
@@ -121,7 +125,7 @@ class _DownloadHomePageState extends State<DownloadTransferList> {
       for (final item in _items)
         item.task == null
             ? _buildListSectionHeading(item.name!)
-            : DownloadListItem(
+            : DownloadRecordItem(
           data: item,
           onTap: (task) {
             _openDownloadedFile(task).then((success) {
@@ -219,10 +223,10 @@ class _DownloadHomePageState extends State<DownloadTransferList> {
     );
   }
 
-  // Not used in the example.
-  void _cancelDownload(TaskInfo task) async {
-    await FlutterDownloader.cancel(taskId: task.taskId!);
-  }
+  // // Not used in the example.
+  // void _cancelDownload(TaskInfo task) async {
+  //   await FlutterDownloader.cancel(taskId: task.taskId!);
+  // }
 
   Future<void> _pauseDownload(TaskInfo task) async {
     await FlutterDownloader.pause(taskId: task.taskId!);
@@ -293,10 +297,8 @@ class _DownloadHomePageState extends State<DownloadTransferList> {
     _tasks = [];
     _items = [];
 
-
-
     _tasks!.addAll(tasks.map((e) {
-      print(e.url);
+      debugPrint(e.url);
       var name = e.url.substring(e.url.lastIndexOf("/") + 1, e.url.length);
       return TaskInfo(name: name,link: e.url);
     }));
@@ -357,7 +359,20 @@ class _DownloadHomePageState extends State<DownloadTransferList> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.title),
+        title: Align(
+          child: Text(widget.title),
+        ),
+        actions: [
+          InkWell(
+            onTap: (){
+              Get.to(() => const DownloadRecordList(title: '文件记录'));
+            },
+            child: const Align(
+              child: Text('记录'),
+            ),
+          ),
+          const SizedBox(width: 10.0,),
+        ],
       ),
       body: Builder(
         builder: (context) {

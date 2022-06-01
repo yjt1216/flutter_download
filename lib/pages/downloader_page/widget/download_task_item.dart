@@ -2,7 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_downloader/flutter_downloader.dart';
 
-import '../download_task_model.dart';
+import '../model/download_task_model.dart';
 
 ///我的云盘--item
 ///
@@ -16,11 +16,13 @@ class DownloadTaskItem extends StatelessWidget {
 
   ///下载相关控件
   Widget? _buildTrailing(TaskInfo task) {
-    return task.status == DownloadTaskStatus.undefined ? IconButton(
+    return task.status == DownloadTaskStatus.undefined
+        ? IconButton(
       onPressed: () => onActionTap!(task),
       constraints: const BoxConstraints(minHeight: 32, minWidth: 32),
       icon: const Icon(Icons.file_download),
-    ) : Container();
+    )
+        : Container();
   }
 
   @override
