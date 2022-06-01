@@ -13,7 +13,6 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:connectivity/connectivity.dart';
 import 'package:get/get.dart';
 
-import 'widget/download_list_item.dart';
 import 'model/download_task_model.dart';
 
 
@@ -308,14 +307,18 @@ class _DownloadHomePageState extends State<DownloadTransferList> {
       count++;
     }
 
+    /// 过滤任务状态--- 下载中或者
     for (final task in tasks) {
       for (final info in _tasks!) {
-        if (info.link == task.url) {
-          info
-            ..taskId = task.taskId
-            ..status = task.status
-            ..progress = task.progress;
+        if(task.status != DownloadTaskStatus.complete){
+          if (info.link == task.url) {
+            info
+              ..taskId = task.taskId
+              ..status = task.status
+              ..progress = task.progress;
+          }
         }
+
       }
     }
 

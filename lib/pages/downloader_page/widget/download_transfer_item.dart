@@ -6,18 +6,18 @@ import '../model/download_task_model.dart';
 
 ///传输列表--item
 ///
-class DownloadListItem extends StatelessWidget {
+class DownloadTransferItem extends StatelessWidget {
 
   final ItemHolder? data;
   final Function(TaskInfo?)? onTap;
   final Function(TaskInfo)? onActionTap;
 
-  const DownloadListItem({Key? key, this.data, this.onTap, this.onActionTap}) : super(key: key);
+  const DownloadTransferItem({Key? key, this.data, this.onTap, this.onActionTap}) : super(key: key);
 
   ///下载相关控件
   Widget? _buildTrailing(TaskInfo task) {
-     if (task.status == DownloadTaskStatus.complete) {
-       return Row(
+    if (task.status == DownloadTaskStatus.complete) {
+      return Row(
         mainAxisSize: MainAxisSize.min,
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
@@ -42,7 +42,7 @@ class DownloadListItem extends StatelessWidget {
         onTap!(data!.task);
       }
           : null,
-      child: data!.task!.status == DownloadTaskStatus.complete ? Container(
+      child:  Container(
         padding: const EdgeInsets.only(left: 16, right: 8),
         child: InkWell(
           child: Stack(
@@ -80,7 +80,7 @@ class DownloadListItem extends StatelessWidget {
             ],
           ),
         ),
-      ) : Container(),
+      ) ,
     );
   }
 

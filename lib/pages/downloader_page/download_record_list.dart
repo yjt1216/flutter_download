@@ -6,12 +6,12 @@ import 'dart:ui';
 import 'package:android_path_provider/android_path_provider.dart';
 import 'package:device_info/device_info.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_download/pages/downloader_page/widget/download_transfer_item.dart';
 import 'package:flutter_downloader/flutter_downloader.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:connectivity/connectivity.dart';
 
-import 'widget/download_list_item.dart';
 import 'model/download_task_model.dart';
 
 /// 下载记录
@@ -123,7 +123,7 @@ class _DownloadRecordListState extends State<DownloadRecordList> {
       for (final item in _items)
         item.task == null
             ? _buildListSectionHeading(item.name!)
-            : DownloadListItem(
+            : DownloadTransferItem(
           data: item,
           onTap: (task) {
             _openDownloadedFile(task).then((success) {
@@ -302,20 +302,21 @@ class _DownloadRecordListState extends State<DownloadRecordList> {
     }));
 
     for (var i = count; i < _tasks!.length; i++) {
-      if(_tasks![i].status == DownloadTaskStatus.complete){
         _items.add(ItemHolder(name: _tasks![i].name, task: _tasks![i]));
-      }
       count++;
     }
 
     for (final task in tasks) {
       for (final info in _tasks!) {
-        if (info.link == task.url) {
-          info
-            ..taskId = task.taskId
-            ..status = task.status
-            ..progress = task.progress;
+        if(task.status == DownloadTaskStatus.complete){
+          if (info.link == task.url) {
+            info
+              ..taskId = task.taskId
+              ..status = task.status
+              ..progress = task.progress;
+          }
         }
+
       }
     }
 
