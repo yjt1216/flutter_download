@@ -2,9 +2,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_downloader/flutter_downloader.dart';
 
-import 'download_task_model.dart';
+import '../download_task_model.dart';
 
-///下载item
+///我的云盘--item
 ///
 class DownloadTaskItem extends StatelessWidget {
 

@@ -16,22 +16,26 @@ class DownloadItems {
     DownloadItem(
       name: 'Arches National Park',
       url:
-      'https://upload.wikimedia.org/wikipedia/commons/6/60/The_Organ_at_Arches_National_Park_Utah_Corrected.jpg',
+      "https://upload-images.jianshu.io/upload_images/9955565-51a4b4f35bd7973f.png",
     ),
     DownloadItem(
       name: 'Canyonlands National Park',
       url:
-      'https://upload.wikimedia.org/wikipedia/commons/7/78/Canyonlands_National_Park%E2%80%A6Needles_area_%286294480744%29.jpg',
+      "https://upload-images.jianshu.io/upload_images/9955565-e99b6bd33b388feb.png",
     ),
     DownloadItem(
       name: 'Death Valley National Park',
       url:
-      'https://upload.wikimedia.org/wikipedia/commons/b/b2/Sand_Dunes_in_Death_Valley_National_Park.jpg',
+      "https://upload-images.jianshu.io/upload_images/9955565-3aafbc20dd329e58.png"
     ),
     DownloadItem(
       name: 'Gates of the Arctic National Park and Preserve',
       url:
-      'https://upload.wikimedia.org/wikipedia/commons/e/e4/GatesofArctic.jpg',
+      'https://www.orimi.com/pdf-test.pdf',
+    ),
+    DownloadItem(
+      name: 'Mine Disk Image',
+      url: "http://121.4.189.24:8089/cloudpan/api/20/20220601111yajatubzyafgs47ufaml7gaznmlbfqk8.jpg",
     ),
   ];
 
@@ -39,28 +43,54 @@ class DownloadItems {
     DownloadItem(
       name: 'Big Buck Bunny',
       url:
-      'http://vfx.mtime.cn/Video/2019/03/18/mp4/190318231014076505.mp4',
+      "http://vfx.mtime.cn/Video/2019/03/19/mp4/190319222227698228.mp4",
     ),
     DownloadItem(
-      name: 'Elephant Dream',
+      name: 'Elephant Dream1',
       url:
-      'http://vfx.mtime.cn/Video/2019/03/19/mp4/190319212559089721.mp4',
+      "http://vfx.mtime.cn/Video/2019/02/04/mp4/190204084208765161.mp4",
     ),
     DownloadItem(
-      name: 'Elephant Dream',
+      name: 'Elephant Dream2',
       url:
-      'http://vfx.mtime.cn/Video/2019/03/21/mp4/190321153853126488.mp4',
+      "http://vfx.mtime.cn/Video/2019/03/21/mp4/190321153853126488.mp4",
     ),
     DownloadItem(
-      name: 'Elephant Dream',
+      name: 'Elephant Dream3',
       url:
-      'http://vfx.mtime.cn/Video/2019/02/04/mp4/190204084208765161.mp4',
+      "http://vfx.mtime.cn/Video/2019/03/19/mp4/190319212559089721.mp4",
     ),
     DownloadItem(
-      name: 'Elephant Dream',
+      name: 'Elephant Dream4',
       url:
-      'http://vfx.mtime.cn/Video/2019/03/19/mp4/190319222227698228.mp4',
+      "http://vfx.mtime.cn/Video/2019/03/18/mp4/190318231014076505.mp4",
     ),
+    DownloadItem(
+      name: 'Big Buck Bunny5',
+      url:
+      "http://vfx.mtime.cn/Video/2019/03/09/mp4/190309153658147087.mp4",
+    ),
+    DownloadItem(
+      name: 'Elephant Dream6',
+      url:
+      "http://vfx.mtime.cn/Video/2019/03/12/mp4/190312083533415853.mp4",
+    ),
+    DownloadItem(
+      name: 'Elephant Dream7',
+      url:
+      "http://vfx.mtime.cn/Video/2019/03/12/mp4/190312143927981075.mp4",
+    ),
+    DownloadItem(
+      name: 'Elephant Dream8',
+      url:
+      "http://vfx.mtime.cn/Video/2019/03/13/mp4/190313094901111138.mp4",
+    ),
+    DownloadItem(
+      name: 'Elephant Dream9',
+      url:
+      "http://vfx.mtime.cn/Video/2019/03/14/mp4/190314102306987969.mp4",
+    ),
+
   ];
 }
 

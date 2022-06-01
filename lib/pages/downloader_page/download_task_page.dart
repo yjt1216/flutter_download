@@ -13,7 +13,7 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:get/get.dart';
 
 import 'download_data.dart';
-import 'download_task_item.dart';
+import 'widget/download_task_item.dart';
 import 'download_task_model.dart';
 import 'download_transfer_list.dart';
 

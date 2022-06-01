@@ -10,7 +10,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:connectivity/connectivity.dart';
 
-import 'download_list_item.dart';
+import 'widget/download_list_item.dart';
 import 'download_task_model.dart';
 
 ///传输列表
