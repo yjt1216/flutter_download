@@ -303,6 +303,7 @@ class _DownloadTaskState extends State<DownloadTaskPage> {
 
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       appBar: AppBar(
         title: const Align(

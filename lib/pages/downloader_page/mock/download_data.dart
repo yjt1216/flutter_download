@@ -35,7 +35,7 @@ class DownloadItems {
     ),
     DownloadItem(
       name: 'Mine Disk Image',
-      url: "http://121.4.189.24:8089/cloudpan/api/20/20220601111yajatubzyafgs47ufaml7gaznmlbfqk8.jpg",
+      url: "http://121.4.189.24:8089/cloudpan/api/20/20220601111pl8y6c0d17fwg0ob6tiuw3zwpas3jwbe.jpg",
     ),
   ];
 
